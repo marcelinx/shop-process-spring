@@ -3,10 +3,12 @@ package com.marcelinx.shop.entities;
 import java.io.Serializable;
 import java.time.Instant;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -15,70 +17,75 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "tb_order")
 public class Order implements Serializable {
-  private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue( strategy = GenerationType.IDENTITY )
-  private Long id;
-  private Instant moment;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-  @ManyToOne
-  @JoinColumn( name = "client_id" )
-  private User client;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy/mm/dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant moment;
 
-  public Order(Long id, Instant moment, User client) {
-    super();
-    this.id = id;
-    this.moment = moment;
-    this.client = client;
-  }
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private User client;
 
-  public Long getId() {
-    return id;
-  }
+	public Order() {
+	}
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+	public Order(Long id, Instant moment, User client) {
+		super();
+		this.id = id;
+		this.moment = moment;
+		this.client = client;
+	}
 
-  public Instant getMoment() {
-    return moment;
-  }
+	public Long getId() {
+		return id;
+	}
 
-  public void setMoment(Instant moment) {
-    this.moment = moment;
-  }
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-  public User getClient() {
-    return client;
-  }
+	public Instant getMoment() {
+		return moment;
+	}
 
-  public void setClient(User client) {
-    this.client = client;
-  }
+	public void setMoment(Instant moment) {
+		this.moment = moment;
+	}
 
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((id == null) ? 0 : id.hashCode());
-    return result;
-  }
+	public User getClient() {
+		return client;
+	}
 
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj)
-      return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
-      return false;
-    Order other = (Order) obj;
-    if (id == null) {
-      if (other.id != null)
-        return false;
-    } else if (!id.equals(other.id))
-      return false;
-    return true;
-  }
+	public void setClient(User client) {
+		this.client = client;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Order other = (Order) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
 }
